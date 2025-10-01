@@ -1,7 +1,7 @@
 export const publicProfile = (req,res) => {
     const username = req.params.username
 
-    res.render('public-profile', {
+    res.render('index1', {
         title: username,
         username : username,
         bio : "Hello!"
