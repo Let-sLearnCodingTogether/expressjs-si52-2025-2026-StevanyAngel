@@ -1,8 +1,7 @@
 import express from "express"
 import web from "./routes/web.js"
 import api from "./routes/api.js"
-
-app.use('/profile', profileRoutes);
+import { database } from "./config/database.js"
 
 const app = express()
 
@@ -20,5 +19,6 @@ app.get('/', (res, req) =>{
 })
 
 app.listen("3000", () => {
+    database()
     console.log('App berjalan di : http://localhost:3000');
 })
