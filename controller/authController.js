@@ -1,18 +1,19 @@
-import {hash} from "../utils/hashUtil.js";
+import {compare, hash} from "../utils/hashUtil.js";
 import UserModel from "../models/userModel.js";
+import { jwtSignUtil } from "../utils/jwtSignUtil.js";
+import { request } from "express";
 
 export const register = async (req, res) => {
     try {
         //Untuk mengambil body atau data dari request
-        const registerData = req.body
+        const request = req.body
+        console.log(request);
 
-        console.log(registerData);
-
-        const hashPassword = hash(registerData.password)
+        const hashPassword =await hash(request.password)
 
         await UserModel.create({
-            username : registerData.username,
-            email : registerData.email,
+            username : request.username,
+            email : request.email,
             password : hashPassword
         })
 
@@ -31,15 +32,16 @@ export const register = async (req, res) => {
 
 export const login = async (req,res) => {
     try {
-        const loginData = req.body
+        const request = req.body
+        console.log(request);
 
         //Mencari user berdasarkan email
         const user = await UserModel.findOne({
-            email: loginData.email
+            email: request.email
         })
-
+        const isPasswordMatch = compare(request.password, user.password);
         //Jika user tidak ditemukan
-        if(!user) {
+        if(!isPasswordMatch) {
             res.status(404).json ({
                 message: "User tidak ditemukan",
                 data: null
@@ -47,13 +49,13 @@ export const login = async (req,res) => {
         }
 
         //membandingkan password yang ada di dalam db dengan request
-        if(compare(loginData.password, user.password)){
+        if(await compare(request.password, user.password)){
             return res.status(200).json({
                 message: "Login berhasil",
                 data: {
                     username: user.username,
                     email: user.email,
-                    token: "TOKEN"
+                    token: jwtSignUtil(user) //Melakukan sign JWT Token
                 }
             })
         }
@@ -62,7 +64,7 @@ export const login = async (req,res) => {
                 data: null
             })
         
-    } catch (errpr) {
+    } catch (error) {
         res.status(500).json({
             message: error,
             data: null
