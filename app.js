@@ -16,10 +16,10 @@ app.use(express.static('public'))
 
 app.set('view engine', 'ejs')
 
-app.use(web)
+//app.use(web)
 app.use("/api", api)
 
-app.get('/', (res, req) =>{
+app.get('/', (req, res) =>{
     
 })
 

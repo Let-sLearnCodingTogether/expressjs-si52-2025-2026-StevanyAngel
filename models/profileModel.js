@@ -8,7 +8,7 @@ const profileSchema = new mongoose.Schema(
         },
         profilPicture : {
             type : String,
-            required : [true, "Proril Pic wajib di isi"],
+            required : [true, "Profil Pic wajib di isi"],
         },
         bio : {
             type : String,
