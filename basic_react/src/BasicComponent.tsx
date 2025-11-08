@@ -18,9 +18,8 @@ function BasicComponent() {
     Simpan
   </MyButton>
 
-  <StateCounter/>
-
   <Button variant="warning">Test Component Lagi</Button>
+    <StateCounter/>
   </>
 }
 
